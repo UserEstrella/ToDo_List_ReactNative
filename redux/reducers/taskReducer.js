@@ -1,4 +1,5 @@
-import { ADD_TASK, ALTER_TASK, DELETE_TASK, SHOW_TASK } from "../constantes";
+import { ADD_TASK, ALTER_TASK, CHECK_TASK, DELETE_TASK, SHOW_TASK } from "../constantes";
+import nextId from "react-id-generator";
 
 //Concerne la toute première initialisation
 const initialState = {
@@ -7,7 +8,7 @@ const initialState = {
 };
 
 //Variable pour faire l'auto-incrémentation des id
-var nextId = 1;
+// let nextId = 0;
 
 
 const taskReducer = (state = initialState, action) => {
@@ -15,9 +16,8 @@ const taskReducer = (state = initialState, action) => {
         case ADD_TASK:
             let newstock = {
                 ...state,
-                tasks: [...state.tasks, {id: nextId,titre: action.value.titre,description: action.value.description,dateDeb: action.value.dateDeb,dateFin: action.value.dateFin,statut: action.value.statut}]
+                tasks: [...state.tasks, {id: nextId(),titre: action.value.titre,description: action.value.description,dateDeb: action.value.dateDeb,dateFin: action.value.dateFin,statut: action.value.statut}]
                 };
-            nextId += 1;
             return newstock;
 
         case ALTER_TASK:
@@ -41,6 +41,29 @@ const taskReducer = (state = initialState, action) => {
                 tasks: updatedArray
             };
             return afteralter;
+
+            case CHECK_TASK:
+                let alteredCheck = action.value;
+                const updatedArrayCheck=[];
+                state.tasks.map(
+                    (item)=>{
+                        if (item.id === alteredCheck.id){
+                            item.id = alteredCheck.id
+                            item.titre = alteredCheck.titre;
+                            item.description = alteredCheck.description;
+                            item.dateDeb = alteredCheck.dateDeb;
+                            item.dateFin = alteredCheck.dateFin;
+                            item.statut = "Terminé";
+                        }
+                        updatedArrayCheck.push(item);
+                    }
+                )
+                let afteralterCheck ={
+                    ...state,
+                    tasks: updatedArrayCheck
+                };
+                return afteralterCheck;
+    
 
         case DELETE_TASK:
             let afterdeleted ={

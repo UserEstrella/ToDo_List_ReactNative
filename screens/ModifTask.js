@@ -157,10 +157,7 @@ export function ModifTask() {
                   style={styles.btn_add}
                   onPress={()=>{
                       //console.log("Ajouter une tâche")
-                      if (titre=="" || description=="" || textDeb=="" || textFin=="") {
-                          
-                          {console.log("Tous les champs ne sont pas remplis !")}
-
+                      if (titre==" " || description==" " || textDeb==" " || textFin==" ") {
                           <AlertNotificationRoot>
                             {
                                 Dialog.show({
@@ -183,8 +180,8 @@ export function ModifTask() {
                             statut: statut
                           }
                           {
-                            console.log("\n",task)
-                            console.log(" ... lancement")
+                            // console.log("\n",task)
+                            // console.log(" ... lancement")
                             dispatch(alterOldTask(task))
                           }
 

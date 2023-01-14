@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, FlatList, Image, Dimensions, Pressable } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView,  Image, Pressable } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Icon } from '@rneui/themed/dist/Icon';
 import { ALERT_TYPE, AlertNotificationRoot, Dialog } from 'react-native-alert-notification';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { removeTask, showTask } from '../redux/actions/taskAction';
+import { checkTask, removeTask, showTask } from '../redux/actions/taskAction';
 
 
 export function Home() {
@@ -46,7 +46,7 @@ export function Home() {
   } else {
     const renderTask = (task, index) => {
       return (
-          <Pressable key={task.id} style={styles.container_task}
+          <Pressable key={index} style={styles.container_task}
               onPress={()=>{
               console.log("Task "+task.id)
               dispatch(showTask(task.id))
@@ -74,41 +74,69 @@ export function Home() {
             </View>
 
             <View style={{justifyContent:'flex-end',alignItems:'flex-end'}}>
-                <AlertNotificationRoot>
-                  <TouchableOpacity
-                      style={styles.btn_rem}
-                      onPress={()=>{
-                        console.log("Supprimer la tâche "+ task.id+" et l'index est "+index)
-                        Dialog.show({
-                          type: ALERT_TYPE.DANGER,
-                          autoClose: 5000,
-                          title: 'Suppression',
-                          textBody: 'Voulez-vous supprimer cette tâche ?',
-                          button: 'Oui !',
-                          onPressButton: ()=>{
-                            console.log("Oui, supprimer cette tâche "+ task.id +" et l'index est "+index)
-                            {dispatch(removeTask(task.id))}
+            <AlertNotificationRoot>
+              <TouchableOpacity
+                  style={styles.btn_fin}
+                  onPress={()=>{
+                    Dialog.show({
+                      type: ALERT_TYPE.WARNING,
+                      autoClose: 5000,
+                      title: 'Validation',
+                      textBody: 'Vous vous apprêtez à cocher cette tâche comme Terminée',
+                      button: 'Oui !',
+                      onPressButton: ()=>{
+                        const tache = {
+                          id:task.id,
+                          titre : task.titre,
+                          description : task.description,
+                          dateDeb : task.dateDeb,
+                          dateFin : task.dateFin,
+                          statut: task.statut
+                        }
+                        console.log("\n",tache)
+                        dispatch(checkTask(tache))
+                      }
 
-                            //Message de suppression réussie
-                            <AlertNotificationRoot>
-                              {
-                                  Dialog.show({
-                                      type: ALERT_TYPE.SUCCESS,
-                                      autoClose: 1000,
-                                      title: 'Succès',
-                                      textBody: 'La tâche a été supprimée !',
-                                      button: 'Ok'
-                                  })
-                              }
-                            </AlertNotificationRoot>
+                    })
+                  }}>
+                <Icon name="check" color='#4FC031' type='font-awesome' />
+              </TouchableOpacity>
+            </AlertNotificationRoot>
+            <AlertNotificationRoot>
+              <TouchableOpacity
+                  style={styles.btn_rem}
+                  onPress={()=>{
+                    //console.log("Supprimer la tâche "+ task.id+" et l'index est "+index)
+                    Dialog.show({
+                      type: ALERT_TYPE.DANGER,
+                      autoClose: 5000,
+                      title: 'Suppression',
+                      textBody: 'Voulez-vous supprimer cette tâche ?',
+                      button: 'Oui !',
+                      onPressButton: ()=>{
+                        //console.log("Oui, supprimer cette tâche "+ task.id +" et l'index est "+index)
+                        {dispatch(removeTask(task.id))}
 
+                        //Message de suppression réussie
+                        <AlertNotificationRoot>
+                          {
+                              Dialog.show({
+                                  type: ALERT_TYPE.SUCCESS,
+                                  autoClose: 1000,
+                                  title: 'Succès',
+                                  textBody: 'La tâche a été supprimée !',
+                                  button: 'Ok'
+                              })
                           }
+                        </AlertNotificationRoot>
 
-                        })
-                      }}>
-                    <Icon name="trash" color='#FF0921' type='font-awesome' />
-                  </TouchableOpacity>
-                </AlertNotificationRoot>
+                      }
+
+                    })
+                  }}>
+                <Icon name="trash" color='#FF0921' type='font-awesome' />
+              </TouchableOpacity>
+            </AlertNotificationRoot>
                 
             </View>
           </Pressable>
@@ -138,7 +166,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    marginTop: 20,
   },
   container_task: {
     padding: 10, 
@@ -156,11 +183,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center"
   },
-  title_text: {
-    fontSize: 30,
-    fontWeight: '900',
-    marginBottom: 20,
-  },
   text:{
     fontSize: 20,
     fontWeight:'bold',
@@ -176,7 +198,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginLeft:10
   },
-  btn_edit: {
+  btn_fin: {
     padding: 10,
     margin: 4,
     borderRadius: 10,

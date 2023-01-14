@@ -1,4 +1,4 @@
-import { ADD_TASK, ALTER_TASK, DELETE_TASK, SHOW_TASK } from "../constantes"
+import { ADD_TASK, ALTER_TASK, CHECK_TASK, DELETE_TASK, SHOW_TASK } from "../constantes"
 
 export function addNewTask(task) {
     return {
@@ -25,5 +25,12 @@ export function showTask(taskIndex) {
     return {
         type: SHOW_TASK,
         value: taskIndex
+    }
+}
+
+export function checkTask(task) {
+    return {
+        type: CHECK_TASK,
+        value: task
     }
 }

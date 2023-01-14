@@ -23,8 +23,8 @@ export function NewTask({navigation, route}) {
   const dispatch = useDispatch();
   
   useEffect(() => {
-      console.log("\nTitre :" + titre)
-      console.log("Description :" + description) 
+      console.log("\nTitre :" + titre +" /" + titre.length)
+      console.log("Description :" + description +" /" + description.length) 
       console.log("Date début :" + dateDeb) 
       console.log("Date fin :" + dateFin) 
   }, [titre,description,dateDeb,dateFin]);

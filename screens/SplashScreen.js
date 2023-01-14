@@ -1,14 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Animated, Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
 import Logo from '../assets/tasklogo.png';
 import {Home} from './Home';
-import { Navigate } from '../navigation/navigate';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { NewTask } from './NewTask';
-import { ShowTask } from './ShowTask';
-import { Button } from '@rneui/themed';
 import { ALERT_TYPE, AlertNotificationRoot, Dialog } from 'react-native-alert-notification';
 
 
@@ -135,13 +130,24 @@ export default function SplashScreen() {
                     </TouchableOpacity>
                 </View>
                 
-                <Button
-                    title="Copyright"
-                    color={"#C0C0C0"}
-                    onPress={() => {
-                        alert('Ce projet est la réalisation exclusive de : \n\t\t\t\t\t\t\t\t\tNyarko Marie-Stella \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tet \n\t\t\t\t\t\t\t\t\t\t\t\t\tColdheart Bill')
-                    }}
-                />
+                
+                <TouchableOpacity
+                  onPress={ ()=>{
+                    <AlertNotificationRoot>
+                    {
+                        Dialog.show({
+                            type: ALERT_TYPE.WARNING,
+                            autoClose: 5000,
+                            title: 'Droit D\'Auteurs',
+                            textBody: 'Ce projet est la réalisation exclusive de : \nNyarko Marie-Stella \net \nColdheart Bill',
+                            button:'Compris !'
+                        })
+                    }
+                </AlertNotificationRoot>
+                  }}>
+                    <Text style={styles.text_right}>Copyright</Text>
+              </TouchableOpacity>
+                
 
             </Animated.View>
 
@@ -208,5 +214,12 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
     },
+    text_right:{
+        color:"#0A6566",
+        fontWeight:'bold',
+        fontSize:20,
+        marginLeft:150,
+        height:30
+    }
 
   });
