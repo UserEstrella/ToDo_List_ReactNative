@@ -152,60 +152,77 @@ export function ModifTask() {
             </View>
           </View>
 
-          <View>
-              <TouchableOpacity
-                  style={styles.btn_add}
-                  onPress={()=>{
-                      //console.log("Ajouter une tâche")
-                      if (titre==" " || description==" " || textDeb==" " || textFin==" ") {
-                          <AlertNotificationRoot>
+          <AlertNotificationRoot>
+            <View>
+                <TouchableOpacity
+                    style={styles.btn_add}
+                    onPress={()=>{
+                        //console.log("Ajouter une tâche")
+                        if (!titre.replace(/\s+/, '').length || !description.replace(/\s+/, '').length || textDeb==" " || textFin==" ") {
+                            
+                              {
+                                  Dialog.show({
+                                      type: ALERT_TYPE.WARNING,
+                                      autoClose: 5000,
+                                      title: 'Attention',
+                                      textBody: 'Vous devez remplir tous les champs !',
+                                      button: 'Ok'
+                                  })
+                              }
+                            
+                        } else if((dateDeb>dateFin)){
+                          {console.log("\nDate de début > Date de fin...")}
+
+                          
                             {
                                 Dialog.show({
                                     type: ALERT_TYPE.WARNING,
                                     autoClose: 5000,
                                     title: 'Attention',
-                                    textBody: 'Vous devez remplir tous les champs !',
+                                    textBody: 'La période définie est incorrecte !',
                                     button: 'Ok'
                                 })
                             }
-                          </AlertNotificationRoot>
-                      } else {
-                          //console.log("Appel de l'action d'ajout...")
-                          const task = {
-                            id:id,
-                            titre : titre,
-                            description : description,
-                            dateDeb : textDeb,
-                            dateFin : textFin,
-                            statut: statut
-                          }
-                          {
-                            // console.log("\n",task)
-                            // console.log(" ... lancement")
-                            dispatch(alterOldTask(task))
-                          }
-
-                          //Message de modif réussie
-                          <AlertNotificationRoot>
-                            {
-                              Dialog.show({
-                                  type: ALERT_TYPE.SUCCESS,
-                                  autoClose: 1000,
-                                  title: 'Succès',
-                                  textBody: 'La tâche a été correctement modifiée !',
-                                  button: 'Ok'
-                              })
+                          
+                        } else {
+                            //console.log("Appel de l'action d'ajout...")
+                            const task = {
+                              id:id,
+                              titre : titre,
+                              description : description,
+                              dateDeb : textDeb,
+                              dateFin : textFin,
+                              statut: statut
                             }
-                          </AlertNotificationRoot>
-                          {
-                            navigation.goBack()
-                            navigation.goBack()
-                          }
-                      }
-                  }}>
-                  <Text style={styles.text_add}>Valider</Text>
-              </TouchableOpacity>
-          </View>
+                            {
+                              // console.log("\n",task)
+                              // console.log(" ... lancement")
+                              dispatch(alterOldTask(task))
+                            }
+
+                            //Message de modif réussie
+                            
+                              {
+                                Dialog.show({
+                                    type: ALERT_TYPE.SUCCESS,
+                                    autoClose: 1000,
+                                    title: 'Succès',
+                                    textBody: 'La tâche a été correctement modifiée !',
+                                    button: 'Ok',
+                                    onPressButton: ()=>{
+                                      navigation.goBack()
+                                      navigation.goBack()
+                                    }
+                                })
+                              }
+                  
+                        }
+                    }}>
+                    <Text style={styles.text_add}>Valider</Text>
+                </TouchableOpacity>
+            </View>
+          </AlertNotificationRoot>
+
         </View>
 
       </View>

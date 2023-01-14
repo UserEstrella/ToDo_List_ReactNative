@@ -23,8 +23,8 @@ export function NewTask({navigation, route}) {
   const dispatch = useDispatch();
   
   useEffect(() => {
-      console.log("\nTitre :" + titre +" /" + titre.length)
-      console.log("Description :" + description +" /" + description.length) 
+      console.log("\nTitre :" + titre +" (" + titre.length +")")
+      console.log("Description :" + description +" (" + description.length + ")") 
       console.log("Date début :" + dateDeb) 
       console.log("Date fin :" + dateFin) 
   }, [titre,description,dateDeb,dateFin]);
@@ -127,86 +127,82 @@ export function NewTask({navigation, route}) {
 
           </View>
 
-          <View>
-              <TouchableOpacity
-                  style={styles.btn_add}
-                  onPress={ ()=>{
-                      //console.log("Ajouter une tâche")
-                      if (titre=="" || description=="" || textDeb=="" || textFin=="") {
-                          {
-                            console.log("\nTous les champs ne sont pas remplis !")
-                          }
+          <AlertNotificationRoot>
+            <View>
+                <TouchableOpacity
+                    style={styles.btn_add}
+                    onPress={ ()=>{
+                        //console.log("Ajouter une tâche")
+                        if (!titre.replace(/\s+/, '').length || !description.replace(/\s+/, '').length || textDeb=="" || textFin=="") {
+                            {
+                              console.log("\nTous les champs ne sont pas remplis !")
+                            }
 
-                          <AlertNotificationRoot>
+                              {
+                                  Dialog.show({
+                                      type: ALERT_TYPE.WARNING,
+                                      autoClose: 5000,
+                                      title: 'Attention',
+                                      textBody: 'Vous devez remplir tous les champs !',
+                                      button: 'Ok'
+                                  })
+                              }
+                        } else if((dateDeb>dateFin)){
+                          {console.log("\nDate de début > Date de fin...")}
+
                             {
                                 Dialog.show({
                                     type: ALERT_TYPE.WARNING,
                                     autoClose: 5000,
                                     title: 'Attention',
-                                    textBody: 'Vous devez remplir tous les champs !',
+                                    textBody: 'La période définie est incorrecte !',
                                     button: 'Ok'
                                 })
                             }
-                          </AlertNotificationRoot>
-                      } else if((dateDeb>dateFin)){
-                        {console.log("\nDate de début > Date de fin...")}
-
-                        <AlertNotificationRoot>
-                          {
-                              Dialog.show({
-                                  type: ALERT_TYPE.WARNING,
-                                  autoClose: 5000,
-                                  title: 'Attention',
-                                  textBody: 'La période définie est incorrecte !',
-                                  button: 'Ok'
-                              })
-                          }
-                        </AlertNotificationRoot>
-                      }else{
-                          //console.log("Appel de l'action d'ajout...")
-                          const task = {
-                            titre : titre,
-                            description : description,
-                            dateDeb : textDeb,
-                            dateFin : textFin,
-                            statut: statut
-                          }
-                          {
-                            console.log("\n",task)
-                            dispatch(addNewTask(task))
-                          }
-
-                          //Message d'ajout réussi
-                          <AlertNotificationRoot>
-                            {
-                              Dialog.show({
-                                  type: ALERT_TYPE.SUCCESS,
-                                  autoClose: 1000,
-                                  title: 'Succès',
-                                  textBody: 'La tâche a été correctement ajoutée !',
-                                  button: 'Ok'
-                              })
+                        }else{
+                            //console.log("Appel de l'action d'ajout...")
+                            const task = {
+                              titre : titre,
+                              description : description,
+                              dateDeb : textDeb,
+                              dateFin : textFin,
+                              statut: statut
                             }
-                          </AlertNotificationRoot>
+                            {
+                              console.log("\n",task)
+                              dispatch(addNewTask(task))
+                            }
 
-                          //Vidage des variables pour possible nouvel ajout
-                          {
-                            onChangeTitre("")
-                            onChangeDescription("")
-                            setTextDeb("")
-                            setTextFin("")
-                            onChangeDateDeb(new Date())
-                            onChangeDateFin(new Date())
-                          }
-                          //Retour à la page d'accueil
-                          {
-                            navigation.goBack()
-                          }
-                      }
-                  }}>
-                  <Text style={styles.text_add}>Ajouter une tâche</Text>
-              </TouchableOpacity>
-          </View>
+                            //Message d'ajout réussi
+                              {
+                                Dialog.show({
+                                    type: ALERT_TYPE.SUCCESS,
+                                    autoClose: 1000,
+                                    title: 'Succès',
+                                    textBody: 'La tâche a été correctement ajoutée !',
+                                    button: 'Ok',
+                                    onPressButton:()=>{
+                                      navigation.goBack()
+                                    }
+                                })
+                              }
+
+                            //Vidage des variables pour possible nouvel ajout
+                            {
+                              onChangeTitre("")
+                              onChangeDescription("")
+                              setTextDeb("")
+                              setTextFin("")
+                              onChangeDateDeb(new Date())
+                              onChangeDateFin(new Date())
+                            }
+                        }
+                    }}>
+                    <Text style={styles.text_add}>Ajouter une tâche</Text>
+                </TouchableOpacity>
+            </View>                        
+          </AlertNotificationRoot>
+
         </View>
       </View>
     </ScrollView>

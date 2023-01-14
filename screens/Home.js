@@ -73,72 +73,67 @@ export function Home() {
               </View>
             </View>
 
-            <View style={{justifyContent:'flex-end',alignItems:'flex-end'}}>
             <AlertNotificationRoot>
-              <TouchableOpacity
-                  style={styles.btn_fin}
-                  onPress={()=>{
-                    Dialog.show({
-                      type: ALERT_TYPE.WARNING,
-                      autoClose: 5000,
-                      title: 'Validation',
-                      textBody: 'Vous vous apprêtez à cocher cette tâche comme Terminée',
-                      button: 'Oui !',
-                      onPressButton: ()=>{
-                        const tache = {
-                          id:task.id,
-                          titre : task.titre,
-                          description : task.description,
-                          dateDeb : task.dateDeb,
-                          dateFin : task.dateFin,
-                          statut: task.statut
-                        }
-                        console.log("\n",tache)
-                        dispatch(checkTask(tache))
-                      }
-
-                    })
-                  }}>
-                <Icon name="check" color='#4FC031' type='font-awesome' />
-              </TouchableOpacity>
-            </AlertNotificationRoot>
-            <AlertNotificationRoot>
-              <TouchableOpacity
-                  style={styles.btn_rem}
-                  onPress={()=>{
-                    //console.log("Supprimer la tâche "+ task.id+" et l'index est "+index)
-                    Dialog.show({
-                      type: ALERT_TYPE.DANGER,
-                      autoClose: 5000,
-                      title: 'Suppression',
-                      textBody: 'Voulez-vous supprimer cette tâche ?',
-                      button: 'Oui !',
-                      onPressButton: ()=>{
-                        //console.log("Oui, supprimer cette tâche "+ task.id +" et l'index est "+index)
-                        {dispatch(removeTask(task.id))}
-
-                        //Message de suppression réussie
-                        <AlertNotificationRoot>
-                          {
-                              Dialog.show({
-                                  type: ALERT_TYPE.SUCCESS,
-                                  autoClose: 1000,
-                                  title: 'Succès',
-                                  textBody: 'La tâche a été supprimée !',
-                                  button: 'Ok'
-                              })
+              <View style={{justifyContent:'flex-end',alignItems:'flex-end'}}>
+                <TouchableOpacity
+                    style={styles.btn_fin}
+                    onPress={()=>{
+                      Dialog.show({
+                        type: ALERT_TYPE.WARNING,
+                        autoClose: 5000,
+                        title: 'Validation',
+                        textBody: 'Vous vous apprêtez à cocher cette tâche comme Terminée',
+                        button: 'Oui !',
+                        onPressButton: ()=>{
+                          const tache = {
+                            id:task.id,
+                            titre : task.titre,
+                            description : task.description,
+                            dateDeb : task.dateDeb,
+                            dateFin : task.dateFin,
+                            statut: task.statut
                           }
-                        </AlertNotificationRoot>
+                          console.log("\n",tache)
+                          dispatch(checkTask(tache))
+                        }
 
-                      }
-
-                    })
-                  }}>
-                <Icon name="trash" color='#FF0921' type='font-awesome' />
-              </TouchableOpacity>
-            </AlertNotificationRoot>
+                      })
+                    }}>
+                  <Icon name="check" color='#4FC031' type='font-awesome' />
+                </TouchableOpacity>
                 
-            </View>
+                <TouchableOpacity
+                    style={styles.btn_rem}
+                    onPress={()=>{
+                      //console.log("Supprimer la tâche "+ task.id+" et l'index est "+index)
+                      Dialog.show({
+                        type: ALERT_TYPE.DANGER,
+                        autoClose: 5000,
+                        title: 'Suppression',
+                        textBody: 'Voulez-vous supprimer cette tâche ?',
+                        button: 'Oui !',
+                        onPressButton: ()=>{
+                          //console.log("Oui, supprimer cette tâche "+ task.id +" et l'index est "+index)
+                          dispatch(removeTask(task.id))
+
+                          //Message de suppression réussie
+                          Dialog.show({
+                            type: ALERT_TYPE.SUCCESS,
+                            autoClose: 1000,
+                            title: 'Succès',
+                            textBody: 'La tâche a été supprimée !',
+                            button: 'Ok'
+                          })
+
+                        }
+
+                      })
+                    }}>
+                  <Icon name="trash" color='#FF0921' type='font-awesome' />
+                </TouchableOpacity>
+                  
+              </View>
+            </AlertNotificationRoot>
           </Pressable>
       );
     }

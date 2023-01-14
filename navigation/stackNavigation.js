@@ -6,6 +6,7 @@ import { ModifTask } from "../screens/ModifTask";
 import { ShowTask } from "../screens/ShowTask";
 import { TouchableOpacity } from "react-native";
 import { Icon } from '@rneui/themed/dist/Icon';
+import { CopyRight } from "../screens/CopyRight";
 
 
 const Stack = createNativeStackNavigator();
@@ -40,6 +41,27 @@ export const MyNavigation = () => {
                     )
                 })}
                 component={NewTask} 
+            />
+
+            <Stack.Screen name="Copy"
+                options={({ navigation }) => ({
+                    animationEnabled: false, title: 'Droits D\'Auteurs',headerTransparent: true,
+                    headerStyle:{elevation: 4, backgroundColor:'#0A6566',color:'white'},
+                    headerTitleStyle:{
+                        color:'white',
+                        fontSize:20,
+                    },
+                    headerLeft: () => (
+                        <TouchableOpacity
+                            style={{marginRight:15}}
+                            onPress={()=>{
+                                navigation.goBack()
+                            }}>
+                            <Icon name="arrow-back" color='white' type='ionicon' />
+                        </TouchableOpacity>
+                    )
+                })}
+                component={CopyRight} 
             />
 
             <Stack.Screen name="Modif"

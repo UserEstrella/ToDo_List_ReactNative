@@ -4,7 +4,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Logo from '../assets/tasklogo.png';
 import {Home} from './Home';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { ALERT_TYPE, AlertNotificationRoot, Dialog } from 'react-native-alert-notification';
 
 
 export default function SplashScreen() {
@@ -133,17 +132,18 @@ export default function SplashScreen() {
                 
                 <TouchableOpacity
                   onPress={ ()=>{
-                    <AlertNotificationRoot>
-                    {
-                        Dialog.show({
-                            type: ALERT_TYPE.WARNING,
-                            autoClose: 5000,
-                            title: 'Droit D\'Auteurs',
-                            textBody: 'Ce projet est la réalisation exclusive de : \nNyarko Marie-Stella \net \nColdheart Bill',
-                            button:'Compris !'
-                        })
-                    }
-                </AlertNotificationRoot>
+                    // <AlertNotificationRoot>
+                    // {
+                    //     Dialog.show({
+                    //         type: ALERT_TYPE.WARNING,
+                    //         autoClose: 5000,
+                    //         title: 'Droit D\'Auteurs',
+                    //         textBody: 'Ce projet est la réalisation exclusive de : \nNyarko Marie-Stella \net \nColdheart Bill',
+                    //         button:'Compris !'
+                    //     })
+                    // }
+                    // </AlertNotificationRoot>
+                    navigation.push("Copy")
                   }}>
                     <Text style={styles.text_right}>Copyright</Text>
               </TouchableOpacity>

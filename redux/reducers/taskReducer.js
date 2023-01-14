@@ -8,7 +8,7 @@ const initialState = {
 };
 
 //Variable pour faire l'auto-incrémentation des id
-// let nextId = 0;
+// let nextId = 1;
 
 
 const taskReducer = (state = initialState, action) => {
